@@ -44,63 +44,43 @@ public class Server {
 
     }
 
-
-
-    public static void main(String[] args) {
-
-
-        List<Coche> coches = new ArrayList<>();
-        List<Reparacion> reparaciones = new ArrayList<>();
-
-        String[] comandoActual = null;
-
-        iniciar();
+    public static void consola(String[] comandoActual) {
 
         try {
 
 
 
-            do {
-                BufferedReader br = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
-                String linea = br.readLine();
 
-                if ((linea != null)) {
 
-                    comandoActual = linea.split(" ");
-                } else {
+                switch (comandoActual[0].toUpperCase().trim()) {
+                    case "ADDCOCHE":
+                        System.out.println("Ha seleccionado el coche");
+                        // crear coche
+                        break;
+                    case "REMOVECOCHE":
+                        System.out.println("Remover");
+                        // Borrar coche
+                        break;
+                    case "GETCOCHE":
+                        System.out.println("Get");
+                        // Ver coche
+                        break;
+                    case "LISTCOCHES":
+                        System.out.println("Lista de coches");
+                        // Listar coches
+                        break;
+                    case "ADDREPARACION":
+                        System.out.println("Ha seleccionado el reparacion");
+                        // Registrar reparacion
+                        break;
+                    default:
+                        System.out.println("Comando invalido");
+                        return;
 
-                    System.out.println("Comando no registrado");
 
                 }
-                    switch (comandoActual[0].toUpperCase().trim()) {
-                        case "ADDCOCHE":
-                            System.out.println("Ha seleccionado el coche");
-                            // crear coche
-                            break;
-                        case "REMOVECOCHE":
-                            System.out.println("Remover");
-                            // Borrar coche
-                            break;
-                        case "GETCOCHE":
-                            System.out.println("Get");
-                            // Ver coche
-                            break;
-                        case "LISTCOCHES":
-                            System.out.println("Lista de coches");
-                            // Listar coches
-                            break;
-                        case "ADDREPARACION":
-                            System.out.println("Ha seleccionado el reparacion");
-                            // Registrar reparacion
-                            break;
-                        default:
-                            System.out.println("Comando invalido");
-                            return;
 
 
-                    }
-
-            } while (!comandoActual[0].equalsIgnoreCase("exit"));
 
 
 
@@ -112,6 +92,51 @@ public class Server {
 
             System.out.println("Error: " + e.getMessage());
         }
+
+    }
+
+
+
+    public static void main(String[] args) throws IOException {
+
+
+        List<Coche> coches = new ArrayList<>();
+        List<Reparacion> reparaciones = new ArrayList<>();
+
+        String[] comandoActual = null;
+
+        iniciar();
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(cliente.getInputStream()))) {
+
+            String linea = br.readLine();
+
+            if ((linea != null)) {
+
+                comandoActual = linea.split(" ");
+            } else {
+
+                System.out.println("Comando no registrado");
+
+            }
+
+            while (!comandoActual[0].equalsIgnoreCase("exit")) {
+
+                consola(comandoActual);
+            }
+
+
+
+        } catch (Exception e) {
+
+            System.err.println("Error, no se pudo leer el comando " + e.getMessage());
+
+        }
+
+
+
+
+
         System.out.println("Usuario " + usuario + " se ha desconectado");
 
 
