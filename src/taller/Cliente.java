@@ -28,6 +28,7 @@ public class Cliente {
 
                 System.out.println(usuario + "-console: ");
                 comandoActual = sc.nextLine();
+                pw.println(comandoActual);
             }
 
         } catch (Exception e) {
