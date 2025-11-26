@@ -7,7 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class Server {
 
@@ -17,15 +16,19 @@ public class Server {
 
    private static Socket cliente = null;
 
-    public static void iniciar() {
 
-        try (ServerSocket server = new ServerSocket(PUERTO)) {
+
+    public static void iniciar() throws IOException {
+
+        try  {
+
+            ServerSocket server = new ServerSocket(PUERTO);
 
             System.out.println("Servidor iniciado en el puerto: " + PUERTO);
 
-            cliente = server.accept();
+            Server.cliente = server.accept();
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
+            BufferedReader br = new BufferedReader(new InputStreamReader(Server.cliente.getInputStream()));
 
             String linea = br.readLine();
 
@@ -44,13 +47,10 @@ public class Server {
 
     }
 
+
     public static void consola(String[] comandoActual) {
 
         try {
-
-
-
-
 
                 switch (comandoActual[0].toUpperCase().trim()) {
                     case "ADDCOCHE":
@@ -80,14 +80,6 @@ public class Server {
 
                 }
 
-
-
-
-
-
-
-
-
         } catch (Exception e) {
 
             System.out.println("Error: " + e.getMessage());
@@ -95,10 +87,34 @@ public class Server {
 
     }
 
+    public static String leerComando(Socket s, BufferedReader br) throws IOException {
+
+        String linea = "";
+
+        try  {
+
+            linea = br.readLine();
+
+            if (linea == null) {
+
+                System.err.println("Comando nulo");
+
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error, no se pudo leer el comando " + e.getMessage());
+        } finally {
+
+            return linea;
+
+        }
+
+
+    }
+
 
 
     public static void main(String[] args) throws IOException {
-
 
         List<Coche> coches = new ArrayList<>();
         List<Reparacion> reparaciones = new ArrayList<>();
@@ -106,32 +122,16 @@ public class Server {
         String[] comandoActual = null;
 
         iniciar();
+        BufferedReader br = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(cliente.getInputStream()))) {
+            do {
 
-            String linea = br.readLine();
-
-            if ((linea != null)) {
-
-                comandoActual = linea.split(" ");
-            } else {
-
-                System.out.println("Comando no registrado");
-
-            }
-
-            while (!comandoActual[0].equalsIgnoreCase("exit")) {
+                comandoActual = leerComando(cliente, br).split(" ");
 
                 consola(comandoActual);
-            }
 
+            } while (!comandoActual[0].equalsIgnoreCase("EXIT"));
 
-
-        } catch (Exception e) {
-
-            System.err.println("Error, no se pudo leer el comando " + e.getMessage());
-
-        }
 
 
 
