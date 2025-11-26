@@ -66,13 +66,13 @@ public class Server {
 
                 if ((linea != null)) {
 
-                    comandoActual = linea.split("");
+                    comandoActual = linea.split(" ");
                 } else {
 
                     System.out.println("Comando no registrado");
 
                 }
-                    switch (comandoActual[0].toUpperCase()) {
+                    switch (comandoActual[0].toUpperCase().trim()) {
                         case "ADDCOCHE":
                             System.out.println("Ha seleccionado el coche");
                             // crear coche
