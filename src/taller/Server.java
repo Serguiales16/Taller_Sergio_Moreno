@@ -17,7 +17,7 @@ public class Server {
 
     private static Socket cliente = null;
 
-
+    public static boolean cocheExistente = false;
 
     public static List<Coche> coches = new ArrayList<>();
     public static List<Reparacion> reparaciones = new ArrayList<>();
@@ -159,6 +159,29 @@ public class Server {
         return new Reparacion(idCoche, descripcion, costo);
     }
 
+    public static void eliminarCoche(String[] comando) {
+        cocheExistente = false;
+        boolean eliminado = false;
+
+        for (Coche coche : coches) {
+
+            if (coche.getId().equalsIgnoreCase(comando[1].trim())) {
+
+                coches.remove(coche);
+                System.out.println("Coche con ID " + comando[1] + " eliminado correctamente");
+                eliminado = true;
+                cocheExistente = true;
+                break;
+
+            }
+        }
+
+        if (!eliminado) {
+            System.out.println("No se encontró un coche con ID " + comando[1]);
+
+        }
+    }
+
     public static void consola(String[] comandoActual, PrintWriter pw) {
 
         try {
@@ -183,12 +206,24 @@ public class Server {
 
                     }catch (Exception e) {
                         System.out.println("Error al añadir coche: Probable ID repetido" + e.getMessage());
+                        pw.println("Error, algo has hecho mal.RECUERDA(ADDCOCHE,ID,MARCA,MODELO,AÑO." + e.getMessage());
                     }
 
                     break;
                 case "REMOVECOCHE":
                     System.out.println("Remover");
-                    // Borrar coche
+
+                    if (!cocheExistente) {
+                        pw.println("Error al eliminar coche: No existe un coche con ese ID");
+                        System.out.println("Error al eliminar coche: No existe un coche con ese ID");
+                        break;
+                    } else {
+
+                        eliminarCoche(comandoActual);
+                        pw.println("Coche con ID " + comandoActual[1] + " eliminado correctamente!!");
+                        System.out.println("El usuario " + usuario + " ha hecho REMOVECOCHE");
+
+                    }
                     break;
                 case "GETCOCHE":
                     System.out.println("Get");
@@ -208,6 +243,7 @@ public class Server {
                     break;
                 default:
                     System.out.println("Comando invalido");
+                    pw.println("Comando invalido");
                     return;
 
 
@@ -216,6 +252,8 @@ public class Server {
         } catch (Exception e) {
 
             System.out.println("Error: " + e.getMessage());
+            pw.println("Error, algo has hecho mal.RECUERDA(ADDCOCHE,ID,MARCA,MODELO,AÑO. Y los demas COMANDO,ID)" + e.getMessage());
+            return;
         }
 
     }
