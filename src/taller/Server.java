@@ -129,7 +129,16 @@ public class Server {
         return cocheVer.toString();
     }
 
+    public static Reparacion añadirReparacion(String[] comando) {
 
+        String idCoche = comando[1];
+        String descripcion = comando[2];
+        float costo = Float.parseFloat(comando[3]);
+
+
+
+        return new Reparacion(idCoche, descripcion, costo);
+    }
 
     public static void consola(String[] comandoActual, PrintWriter pw) {
 
@@ -158,7 +167,9 @@ public class Server {
                     break;
                 case "ADDREPARACION":
                     System.out.println("Ha seleccionado el reparacion");
-                    // Registrar reparacion
+                    reparaciones.add(añadirReparacion(comandoActual));
+                    pw.println("Reparacion para coche ID " + comandoActual[1] + " añadida correctamente!!");
+                    System.out.println("Reparacion para coche ID " + comandoActual[1] + " añadida correctamente!!");
                     break;
                 default:
                     System.out.println("Comando invalido");
