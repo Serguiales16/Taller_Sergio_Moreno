@@ -96,11 +96,37 @@ public class Server {
         StringBuilder cochesLista = new StringBuilder();
 
         for (Coche coche : coches) {
-
-            cochesLista.append("ID: ").append(coche.getId()).append(" Marca: ").append(coche.getMarca()).append(" Modelo: ").append(coche.getModelo()).append(" Año: ").append(coche.getAño()).append("\n");
-           // System.out.println("ID: " + coche.getId() + " Marca: " + coche.getMarca() + " Modelo: " + coche.getModelo() + " Año: " + coche.getAño());
+            cochesLista.append("ID: ")
+                    .append(coche.getId())
+                    .append(" Marca: ")
+                    .append(coche.getMarca())
+                    .append(" Modelo: ")
+                    .append(coche.getModelo())
+                    .append(" Año: ")
+                    .append(coche.getAño())
+                    .append("\n");
         }
+
+        cochesLista.append("\n!");
         return cochesLista.toString();
+    }
+
+
+    public static String verCoche(String[] comando) {
+
+        StringBuilder cocheVer = new StringBuilder();
+
+        for (Coche coche : coches) {
+
+            if (coche.getId().equalsIgnoreCase(comando[1].trim())) {
+
+                cocheVer.append("ID: ").append(coche.getId()).append(" Marca: ").append(coche.getMarca()).append(" Modelo: ").append(coche.getModelo()).append(" Año: ").append(coche.getAño());
+
+            }
+
+        }
+
+        return cocheVer.toString();
     }
 
 
@@ -122,7 +148,8 @@ public class Server {
                     break;
                 case "GETCOCHE":
                     System.out.println("Get");
-                    // Ver coche
+                    pw.println(verCoche(comandoActual));
+                    System.out.println("El usuario " + usuario + " ha hecho GETCOCHE");
                     break;
                 case "LISTCOCHES":
                     System.out.println("Lista de coches");
@@ -164,10 +191,6 @@ public class Server {
                 consola(comandoActual, pw);
 
             } while (!comandoActual[0].equalsIgnoreCase("EXIT"));
-
-
-
-
 
 
         System.out.println("Usuario " + usuario + " se ha desconectado");

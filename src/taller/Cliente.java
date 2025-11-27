@@ -22,30 +22,48 @@ public class Cliente {
             PrintWriter pw = new PrintWriter(s.getOutputStream(), true);
             BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
             pw.println(usuario);
+
             System.out.println("Conexion exitosa al servidor");
+
             while (!comandoActual.equalsIgnoreCase("exit")) {
 
-            //    System.out.println("Respuesta:\n " + br.readLine());
-
-                System.out.println("Comandos disponibles\nADDCOCHE: Añade un coche al taller\nREMOVECOCHE: Elimina un coche del taller" +
-                        "\nGETCOCHE: Obtiene información de un coche\nLISTCOCHES: Lista todos los coches en el taller\nADDREPARACION: Registra una reparación para un coche" +
-                        "\nEXIT: Cierra conexion");
+                System.out.println(
+                        """
+                                Comandos disponibles:
+                                ADDCOCHE - Agregar Coche
+                                REMOVECOCHE - Borrar Coche
+                                GETCOCHE - Ver coche por ID
+                                LISTCOCHES - Listar coches
+                                ADDREPARACION - Añadir reparacion
+                                EXIT"""
+                );
 
                 System.out.println(usuario + "-console: ");
                 comandoActual = sc.nextLine();
                 pw.println(comandoActual);
 
-                String respuesta = br.readLine();
-                System.out.println(respuesta);
+
+                if (comandoActual.equalsIgnoreCase("LISTCOCHES")) {
+
+                    String lineaRecibida;
+
+                    while ((lineaRecibida = br.readLine()) != null) {
+                        if (lineaRecibida.equals("!")) {
+                            break;
+                        }
+                        System.out.println(lineaRecibida);
+                    }
+
+                } else {
+                    String respuesta = br.readLine();
+                    if (respuesta != null && !respuesta.isEmpty()) {
+                        System.out.println(respuesta);
+                    }
+                }
             }
 
         } catch (Exception e) {
-
             System.out.println("Error al conectar con el servidor " + e.getMessage());
-
         }
-
-
-
     }
 }

@@ -45,4 +45,14 @@ public class Coche {
     public void setAño(String año) {
         this.año = año;
     }
+
+    @Override
+    public String toString() {
+        return "Coche{" +
+                "id='" + id + '\'' +
+                ", marca='" + marca + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", año='" + año + '\'' +
+                '}';
+    }
 }
