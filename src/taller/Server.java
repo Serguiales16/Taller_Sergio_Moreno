@@ -81,14 +81,33 @@ public class Server {
 
     public static Coche añadirCoche(String[] comando) {
 
+        boolean existe = false;
+
+        for (Coche coche : coches) {
+
+            if (coche.getId().equalsIgnoreCase(comando[1].trim())) {
+
+                existe = true;
+                System.out.println("Error: Ya existe un coche con ese ID");
+                break;
+            }
+
+        }
         String idCoche = comando[1];
         String marcaCoche = comando[2];
         String modeloCoche = comando[3];
         String añoCoche = comando[4];
 
+        Coche c1 = new Coche(idCoche, marcaCoche, modeloCoche, añoCoche);
+
+        if (existe) {
+            return null;
+        } else {
+
+            return c1;
+        }
 
 
-        return new Coche(idCoche, marcaCoche, modeloCoche, añoCoche);
     }
 
     public static String listarCoches() {
@@ -146,10 +165,26 @@ public class Server {
 
             switch (comandoActual[0].toUpperCase().trim()) {
                 case "ADDCOCHE":
-                    System.out.println("Ha seleccionado crear un coche");
-                    coches.add(añadirCoche(comandoActual));
-                    System.out.println("Coche " + comandoActual[2] + " añadido correctamente!!");
-                    pw.println("Coche " + comandoActual[2] + " añadido correctamente!!");
+
+                    try {
+                        System.out.println("Ha seleccionado crear un coche");
+                        Coche nuevo = añadirCoche(comandoActual);
+                        if (nuevo == null) {
+                            pw.println("Error al añadir coche: Probable ID repetido");
+                            System.out.println("Error al añadir coche: Probable ID repetido");
+                            break;
+                        } else {
+                            coches.add(añadirCoche(comandoActual));
+                            System.out.println("Coche " + comandoActual[2] + " añadido correctamente!!");
+                            pw.println("Coche " + comandoActual[2] + " añadido correctamente!!");
+
+                        }
+
+
+                    }catch (Exception e) {
+                        System.out.println("Error al añadir coche: Probable ID repetido" + e.getMessage());
+                    }
+
                     break;
                 case "REMOVECOCHE":
                     System.out.println("Remover");
