@@ -19,10 +19,9 @@ El servidor mantiene listas en memoria de `Coche` y `Reparacion`. El cliente env
 - `README.md`
 
 ## Cómo ejecutar
-1. Compilar con Maven:
-   - `mvn package`
-2. Desde IDE (IntelliJ): ejecutar primero `src/taller/Server.java`, después `src/taller/Cliente.java`.
-3. Desde línea de comandos (tras `mvn package`):
+1. Abrir Eclipse:
+   - `Seleccionar File-Open Proyects from file System, seleccionar la carpeta`
+2. Desde línea de comandos (tras `mvn package`):
    - Iniciar servidor:
      - `java -cp target/classes taller.Server`
    - Iniciar cliente (en otra terminal):
